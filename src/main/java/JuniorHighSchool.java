@@ -1,5 +1,3 @@
-import java.util.Random;
-
 /**
  * Created by benevolent0505 on 17/01/09.
  */
@@ -24,12 +22,15 @@ public class JuniorHighSchool {
 
     public double[][] makeRandomMatrix(int subjectNum) {
         double[][] randomMatrix = new double[subjectNum][subjectNum];
-        Random rnd = new Random();
 
         for (int i = 0; i < subjectNum; i++) {
             for (int j = 0; j < subjectNum; j++) {
-                randomMatrix[i][j] = (double)rnd.nextInt(10);
+                randomMatrix[i][j] = Math.random();
             }
+        }
+
+        if (Matrix2D.getDeterminant(randomMatrix) == 0.0) {
+            randomMatrix = makeRandomMatrix(subjectNum);
         }
 
         return randomMatrix;
