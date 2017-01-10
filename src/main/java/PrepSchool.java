@@ -1,6 +1,3 @@
-import org.apache.commons.math3.linear.MatrixUtils;
-import org.apache.commons.math3.linear.RealMatrix;
-
 /**
  * Created by benevolent0505 on 17/01/09.
  */
@@ -27,8 +24,6 @@ public class PrepSchool {
     }
 
     private double[][] convertInvMatrix(double[][] matrix) {
-//        RealMatrix m = MatrixUtils.createRealMatrix(matrix);
-//        return MatrixUtils.blockInverse(m, 0).getData();
         Matrix2D m = Matrix2D.createMatrix(matrix);
         return m.getInvMatrix().getData();
     }
