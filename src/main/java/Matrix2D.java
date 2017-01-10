@@ -115,6 +115,32 @@ public class Matrix2D {
         return createMatrix(invMatrix);
     }
 
+    // http://thira.plavox.info/blog/2008/06/_c.html
+    public static double getDeterminant(double[][] matrix) {
+        if (matrix.length != matrix[0].length) return 0.0;
+
+        int size = matrix.length;
+        double[][] copy = matrix;
+
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (i < j) {
+                    double tmp = matrix[j][i] / matrix[i][i];
+                    for (int k = 0; k < size; k++) {
+                        copy[j][k] -= copy[i][k] * tmp;
+                    }
+                }
+            }
+        }
+
+        double det = 1.0;
+        for (int i = 0; i < size; i++) {
+            det *= copy[i][i];
+        }
+
+        return det;
+    }
+
     public Matrix2D getSubMatrix2D(int startRow, int endRow, int startColumn, int endColumn) {
         double[][] subMatrix = new double[endRow - startRow + 1][endColumn - startColumn + 1];
 
