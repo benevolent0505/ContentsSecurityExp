@@ -3,14 +3,14 @@ import java.util.Scanner;
 /**
  * Created by benevolent0505 on 17/01/09.
  */
-public class Converter {
+public class IOManager {
 
     /**
      * 表形式のファイル前提
      */
-    public static double[][] convert(String filename) {
+    public static double[][] input(String filename) {
         double[][] matrix;
-        Scanner scanner = new Scanner(Converter.class.getClassLoader().getResourceAsStream(filename));
+        Scanner scanner = new Scanner(IOManager.class.getClassLoader().getResourceAsStream(filename));
         scanner.useDelimiter("\n");
         scanner.next(); // 1行目はheaderなので無視
 
@@ -22,7 +22,7 @@ public class Converter {
             row += 1;
         }
         scanner.reset();
-        scanner = new Scanner(Converter.class.getClassLoader().getResourceAsStream(filename));
+        scanner = new Scanner(IOManager.class.getClassLoader().getResourceAsStream(filename));
         scanner.next();
 
         int counter = 0;
@@ -37,5 +37,9 @@ public class Converter {
         }
 
         return matrix;
+    }
+
+    public static void output(double[][] matrix, String filename) {
+
     }
 }

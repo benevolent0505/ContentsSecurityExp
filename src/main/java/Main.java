@@ -5,7 +5,7 @@ import java.io.IOException;
  */
 public class Main {
 
-    public static String PARTNER_IP = "";
+    public static String PARTNER_IP = "127.0.0.1";
 
     public static void main(String[] args) {
         runPPDMSequence();
@@ -14,7 +14,7 @@ public class Main {
     public static void runAsATYUUGAKU() throws IOException {
         Connector connector = new Connector("TYUUGAKU", PARTNER_IP);
 
-        double[][] grade = Converter.convert("seiseki.txt");
+        double[][] grade = IOManager.input("seiseki.txt");
         JuniorHighSchool chugaku = new JuniorHighSchool(grade);
 
         // Mを送信
@@ -35,13 +35,15 @@ public class Main {
 
         String[][] result = chugaku.getAdmissionResult(admission);
         Matrix2D.printMatrix(result);
+
+        connector.endConnection();
     }
 
     public static void runAsAYOBIKOU() throws IOException {
         Connector connector = new Connector("YOBIKOU", PARTNER_IP);
 
-        double[][] weight = Converter.convert("omomi.txt");
-        double[][] minimumLine = Converter.convert("saiteiten.txt");
+        double[][] weight = IOManager.input("omomi.txt");
+        double[][] minimumLine = IOManager.input("saiteiten.txt");
         PrepSchool yobiko = new PrepSchool(weight, minimumLine);
 
         // Mを受信
@@ -61,12 +63,16 @@ public class Main {
 
         // 合否行列を送信
         connector.sendTable(yobiko.getAdmissionMatrix());
+
+        connector.endConnection();
+
+        Matrix2D.printMatrix(yobiko.getAdmissionMatrix());
     }
 
     public static void runPPDMSequence() {
-        double[][] weight = Converter.convert("debug/weight.txt");
-        double[][] grade = Converter.convert("debug/grade.txt");
-        double[][] minimumLine = Converter.convert("debug/lowline.txt");
+        double[][] weight = IOManager.input("omomi.txt");
+        double[][] grade = IOManager.input("seiseki.txt");
+        double[][] minimumLine = IOManager.input("saiteiten.txt");
 
         JuniorHighSchool chugaku = new JuniorHighSchool(grade);
         PrepSchool yobiko = new PrepSchool(weight, minimumLine);
@@ -86,6 +92,10 @@ public class Main {
         double[][] admission = yobiko.getAdmissionMatrix();
 
         String[][] result = chugaku.getAdmissionResult(admission);
+
+        System.out.println("適性行列");
+        Matrix2D.printMatrix(admission);
+        System.out.println("合否行列");
         Matrix2D.printMatrix(result);
     }
 }
