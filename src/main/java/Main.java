@@ -8,7 +8,7 @@ public class Main {
     public static String PARTNER_IP = "127.0.0.1";
 
     public static void main(String[] args) {
-        runPPDMSequence();
+        runNonPPDMSequence();
     }
 
     public static void runAsATYUUGAKU() throws IOException {
@@ -69,36 +69,32 @@ public class Main {
         Matrix2D.printMatrix(yobiko.getAdmissionMatrix());
     }
 
-    public static void runPPDMSequence() {
-        double[][] weight = IOManager.input("omomi.txt");
-        double[][] grade = IOManager.input("seiseki.txt");
+    public static void runNonPPDMSequence() {
+        // 行列読み取り
+        Matrix2D weight = Matrix2D.createMatrix(IOManager.input("omomi.txt"));
+        Matrix2D grade = Matrix2D.createMatrix(IOManager.input("seiseki.txt"));
         double[][] minimumLine = IOManager.input("saiteiten.txt");
 
-        JuniorHighSchool chugaku = new JuniorHighSchool(grade);
-        PrepSchool yobiko = new PrepSchool(weight, minimumLine);
+        // 適性行列の作成
+        double[][] aptitude = grade.multiply(weight).getData();
 
-        double[][] randomMatrix = chugaku.getRandomMatrix();
-        yobiko.receiveRandomMatrix(randomMatrix);
+        // 合否行列の作成
+        int row = aptitude.length;
+        int col = aptitude[0].length;
 
-        double[][] aPrime1 = chugaku.getAPrime1Matrix();
-        yobiko.receiveAPrime1Matrix(aPrime1);
-
-        double[][] bPrime1 = yobiko.getBPrime1Matrix();
-        chugaku.receiveBPrime1Matrix(bPrime1);
-
-        double[][] aPrime2 = chugaku.getAPrime2Matrix();
-        yobiko.receiveAPrime2Matrix(aPrime2);
-
-        double[][] admission = yobiko.getAdmissionMatrix();
-
-        String[][] result = chugaku.getAdmissionResult(admission);
+        double[][] admission = new double[row][col];
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                admission[i][j] = aptitude[i][j] - minimumLine[0][j] >= 0 ? 1.0 : 0.0;
+            }
+        }
 
         System.out.println("適性行列");
-        Matrix2D.printMatrix(admission);
-        IOManager.output(admission, "aptitude.txt");
+        Matrix2D.printMatrix(aptitude);
+        IOManager.output(aptitude, "aptitude.txt");
 
         System.out.println("合否行列");
-        Matrix2D.printMatrix(result);
-        IOManager.output(result, "result.txt");
+        Matrix2D.printMatrix(admission);
+        IOManager.output(admission, "admission.txt");
     }
 }
