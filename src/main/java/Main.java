@@ -32,10 +32,12 @@ public class Main {
 
         // 合否行列を受信
         double[][] admission = connector.getTable();
+        IOManager.output(admission, "admission.txt");
 
         String[][] result = chugaku.getAdmissionResult(admission);
         Matrix2D.printMatrix(result);
 
+        /**通信を行う際に使用します*/
         connector.endConnection();
     }
 
@@ -59,14 +61,16 @@ public class Main {
 
         // A''を受信
         double[][] aPrime2 = connector.getTable();
-        yobiko.receiveAPrime2Matrix(aPrime2);
+        yobiko.receiveAPrime2Matrix(aPrime2); // receiveAPrime2Matrix
+
+        Matrix2D.printMatrix(yobiko.getAptitudeMatrix());
+        IOManager.output(yobiko.getAptitudeMatrix(), "aptitude.txt");
 
         // 合否行列を送信
         connector.sendTable(yobiko.getAdmissionMatrix());
 
+        /**通信を行う際に使用します*/
         connector.endConnection();
-
-        Matrix2D.printMatrix(yobiko.getAdmissionMatrix());
     }
 
     public static void runNonPPDMSequence() {

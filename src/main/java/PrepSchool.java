@@ -100,4 +100,8 @@ public class PrepSchool {
 
         return admissionMatrix;
     }
+
+    public double[][] getAptitudeMatrix() {
+        return APTITUDE_MATRIX;
+    }
 }
