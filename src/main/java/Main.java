@@ -95,7 +95,10 @@ public class Main {
 
         System.out.println("適性行列");
         Matrix2D.printMatrix(admission);
+        IOManager.output(admission, "aptitude.txt");
+
         System.out.println("合否行列");
         Matrix2D.printMatrix(result);
+        IOManager.output(result, "result.txt");
     }
 }

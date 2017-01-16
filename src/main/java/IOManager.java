@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.Scanner;
 
 /**
@@ -40,6 +41,45 @@ public class IOManager {
     }
 
     public static void output(double[][] matrix, String filename) {
+        String convMatrix[][] = new String[matrix.length][matrix[0].length];
 
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                convMatrix[i][j] = Double.toString(matrix[i][j]);
+            }
+        }
+
+        IOManager.output(convMatrix, filename);
+    }
+
+    public static void output(String[][] matrix, String filename) {
+        File file = new File(filename);
+
+        try {
+            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+
+            int row = matrix.length;
+            int col = matrix[0].length;
+
+            for (int i = 0; i < row; i++) {
+                for (int j = 0; j < col; j++) {
+                    // 行末のチェック
+                    if (j != col -1) {
+                        writer.print(matrix[i][j]);
+                        writer.print(", ");
+                    } else {
+                        // 最終行の改行を取り除く
+                        if (i == row - 1) {
+                            writer.print(matrix[i][j]);
+                        } else {
+                            writer.println(matrix[i][j]);
+                        }
+                    }
+                }
+            }
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
